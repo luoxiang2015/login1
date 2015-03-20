@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="Chinese" class="com.luox2014.spring.Chinese"></bean>
+	<bean id="American" class="com.luox2014.spring.American"></bean>
+	<bean id="BuyBook" class="com.luox2014.springAOP.BuyBookImpl"></bean>
+	<bean id="myBeforeAdvice" class="com.luox2014.springAOP.MyBeforeAdvice"></bean>
+	<bean id="myAfterAdvice" class="com.luox2014.springAOP.MyAfterAdvice"></bean>
+	<bean id="myCompareInterceptor" class="com.luox2014.springAOP.CompareInterceptor"></bean>
+   <!-- bean中的id在测试类中 通过获取它来执行此类    class为固定 通过实现代理类 来配置相关操作   在执行BuyBook时会提前调用哪个方法 执行后会调用哪个方法 -->
+  <bean id="newBuyBook" class="org.springframework.aop.framework.ProxyFactoryBean">  
+      <!-- 此name值不变 value值指向 接口  代理接口 -->
+      <property name="proxyInterfaces" >
+      <value>com.luox2014.springAOP.BuyBook1 </value>
+      </property>
+           <!-- 配置拦截器的名字  beforeadvice  afteradvice为拦截器  拦截器要在bean.xml中注入 -->
+        <property name="interceptorNames">   
+            <list>  
+                  <value>myBeforeAdvice</value>
+                  <value>myAfterAdvice</value>
+                  <value>myCompareInterceptor</value>
+            </list>  
+        </property>  
+        <!-- 目标  执行什么类时进行拦截器的加载 -->
+        <property name="target">
+        <ref bean="BuyBook"></ref>
+        </property>  
+    </bean>  
+	
+</beans>
